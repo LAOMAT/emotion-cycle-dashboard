@@ -404,6 +404,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
       <div class="rv-mini" id="recentReviews"></div>
     </div>
   </div>
+  <div class="module" id="mod-ai-brief">
+    <div class="mod-title"><span class="mod-icon">&#129302;</span>AI每日市场简报<span class="mod-sub">DailyStockAnalysis &middot; 智能分析</span></div>
+    <div class="box" id="aiBriefBox"></div>
+  </div>
+  <div class="module" id="mod-ai-agents">
+    <div class="mod-title"><span class="mod-icon">&#129504;</span>AI多Agent投研<span class="mod-sub">TradingAgents &middot; 4角色协作分析</span></div>
+    <div class="box" id="aiAgentsBox"></div>
+  </div>
+  <div class="module" id="mod-backtest">
+    <div class="mod-title"><span class="mod-icon">&#128200;</span>策略回测验证<span class="mod-sub">Backtrader &middot; 历史回测报告</span></div>
+    <div class="box" id="backtestBox"></div>
+  </div>
   <div class="module" id="mod-industry">
     <div class="mod-title"><span class="mod-icon">&#127981;</span>产业追踪<span class="mod-sub">Serenity框架 &middot; 产业链研报</span></div>
     <div class="box">
@@ -489,6 +501,9 @@ var NAVS=[
   {id:'mod-fund',icon:'&#128176;',name:'资金追踪'},
   {id:'mod-info',icon:'&#128240;',name:'信息挖掘'},
   {id:'mod-review',icon:'&#128221;',name:'每日复盘'},
+  {id:'mod-ai-brief',icon:'&#129302;',name:'AI简报'},
+  {id:'mod-ai-agents',icon:'&#129504;',name:'AI投研'},
+  {id:'mod-backtest',icon:'&#128200;',name:'回测验证'},
   {id:'mod-industry',icon:'&#127981;',name:'产业追踪'},
   {id:'mod-library',icon:'&#128218;',name:'题材库'},
   {id:'mod-theory',icon:'&#128214;',name:'理论体系'},
@@ -1138,9 +1153,69 @@ function renderLibrary(){
   renderTree();
 }
 
+function renderAIBrief(){
+  var b=AI_BRIEF,el=document.getElementById('aiBriefBox');
+  if(!b||!b.brief){el.innerHTML='<div style="padding:20px;color:#999;text-align:center">AI简报数据尚未生成，请运行 daily_ai_analyst.py</div>';return}
+  el.innerHTML='<div style="padding:15px;font-size:12px;line-height:1.8;white-space:pre-wrap;font-family:monospace">'+b.brief+'</div>';
+}
+function renderAIAgents(){
+  var r=AI_AGENTS,el=document.getElementById('aiAgentsBox');
+  if(!r||!r.agents){el.innerHTML='<div style="padding:20px;color:#999;text-align:center">AI投研数据尚未生成，请运行 trading_agents.py</div>';return}
+  var h='<div style="padding:10px 15px;background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;border-radius:8px;margin-bottom:10px">';
+  h+='<div style="font-size:14px;font-weight:700">综合评分: '+r.avg_score+'/100 | 决策: <b>'+r.final_decision+'</b></div>';
+  h+='<div style="font-size:10px;opacity:.7">多头'+r.vote.bullish+' 空头'+r.vote.bearish+' 中立'+r.vote.neutral+'</div></div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">';
+  r.agents.forEach(function(a){
+    var bc=a.verdict==='bullish'||a.verdict==='safe'?'#4caf50':a.verdict==='bearish'||a.verdict==='danger'||a.verdict==='critical'?'#f44336':'#ff9800';
+    h+='<div class="box" style="border-left:3px solid '+bc+'"><div style="padding:8px 12px">';
+    h+='<div style="font-weight:700;font-size:13px;margin-bottom:6px">'+a.agent+' <span style="color:'+bc+'">'+a.rating+' ('+a.score+'/100)</span></div>';
+    a.key_findings.forEach(function(f){h+='<div style="font-size:11px;color:#666;padding:1px 0">- '+f+'</div>'});
+    h+='</div></div>';
+  });
+  h+='</div>';
+  if(r.backtest){
+    h+='<div class="box" style="margin-top:10px"><div class="box-header">策略回测</div><div style="padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px">';
+    var labels=['弱转强','趋势低吸'];
+    labels.forEach(function(n){
+      var bt=r.backtest[n];
+      h+='<div><b>'+n+'</b><br>胜率: '+bt.win_rate+'% | 收益: '+bt.total_return+'%<br>回撤: '+bt.max_drawdown+'% | 交易: '+bt.total_trades+'次</div>';
+    });
+    h+='</div></div>';
+  }
+  el.innerHTML=h;
+}
+function renderBacktest(){
+  var r=AI_AGENTS,el=document.getElementById('backtestBox');
+  if(!r||!r.backtest){el.innerHTML='<div style="padding:20px;color:#999;text-align:center">回测数据尚未生成</div>';return}
+  var h='';
+  var labels=['弱转强','趋势低吸'];
+  labels.forEach(function(n){
+    var bt=r.backtest[n];
+    h+='<div class="box" style="margin-bottom:10px"><div class="box-header">'+n+' 策略</div>';
+    h+='<div style="padding:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;font-size:12px">';
+    h+='<div><div style="font-size:20px;font-weight:700;color:#4caf50">'+bt.win_rate+'%</div><div style="color:#999;font-size:10px">胜率</div></div>';
+    h+='<div><div style="font-size:20px;font-weight:700;color:'+(bt.total_return>=0?'#4caf50':'#f44336')+'">'+bt.total_return+'%</div><div style="color:#999;font-size:10px">累计收益</div></div>';
+    h+='<div><div style="font-size:20px;font-weight:700;color:#f44336">'+bt.max_drawdown+'%</div><div style="color:#999;font-size:10px">最大回撤</div></div>';
+    h+='<div><div style="font-size:20px;font-weight:700">'+bt.total_trades+'</div><div style="color:#999;font-size:10px">交易次数</div></div>';
+    h+='</div>';
+    if(bt.by_environment&&Object.keys(bt.by_environment).length){
+      h+='<div style="padding:0 10px 10px;font-size:11px">';
+      var envs=Object.keys(bt.by_environment).sort(function(a,b){return bt.by_environment[b].signals-bt.by_environment[a].signals});
+      h+='<b>环境胜率：</b> ';
+      envs.forEach(function(ek){
+        var ei=bt.by_environment[ek],wr=ei.signals>0?Math.round(ei.wins/ei.signals*100):0;
+        h+='<span style="margin-right:10px;color:'+(wr>=50?'#4caf50':'#f44336')+'">'+ek+' '+wr+'%('+ei.signals+'次)</span>';
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+  });
+  el.innerHTML=h;
+}
 function init(){
   renderNav();renderKPI();renderLabels();renderCanvas();updateScroll();setupWheel();
   renderCycleSummary();renderThemeDash();renderStrategy();renderFund();renderInfo();renderReview();renderLibrary();
+  renderAIBrief();renderAIAgents();renderBacktest();
   window.addEventListener('resize',function(){
     if(chart)chart.resize();
     if(fundChart)fundChart.resize();
@@ -1148,5 +1223,5 @@ function init(){
 }
 init();
 </script>
-</body>
+<script>var AI_BRIEF={"date": "2026-07-02", "brief": "## AI 每日市场简报 | 2026-07-02\n\n### 核心摘要\n- **市场风格**：弱势退潮（前一交易日：弱势退潮）\n- **操作姿势**：防守\n- **大盘系数**：105 ↓ | **超短情绪**：109 ↓ | **亏钱效应**：146 ↑\n- **周期节点**：未知\n\n### 涨停数据\n- 实际涨停：91 家（前日 149，-58）\n- 实际跌停：40 家（前日 6，+34）\n- 炸板率：30.0% | 连板高度：0 板\n\n### 成交额\n- 0 亿（持平 +0.0%）\n\n### 板块分析\n- **主流**：ST板块、机器人概念\n\n### 策略建议\n- ❌ 弱势退潮，观望为主，仓位 2 成以下\n\n### 次日关注\n- 周期节点延续性：未知 → 关注次日开盘确认\n- 重点关注：ST板块、机器人概念\n- 风险提示：炸板率正常", "weekly": "## 本周总结 | 2026-06-26 ~ 2026-07-02\n- 风格演变：弱势退潮 → 弱势退潮 → 混沌轮动 → 弱势退潮 → 弱势退潮\n- 大盘系数均值：122\n- 周涨停：543 | 周跌停：118\n- 下周关注：是否有修复信号", "total_days": 118};var AI_AGENTS={"date": "2026-07-02", "final_decision": "HOLD 持股观望", "avg_score": 48.8, "vote": {"bullish": 0, "bearish": 1, "neutral": 3}, "agents": [{"agent": "基本面分析师", "rating": "中性 ★★", "score": 50, "key_findings": ["大盘系数 105（偏强）", "亏钱效应 146（高风险）", "成交额 0亿（低迷）", "大盘系数5日趋势 上升"], "verdict": "neutral"}, {"agent": "技术分析师", "rating": "中性偏多 ★★★", "score": 55, "key_findings": ["超短情绪 109 | 模拟RSI 69 | 连板高度 0 板", "炸板率 30.0%（谨慎追涨）", "涨停 91 家 vs 跌停 40 家"], "verdict": "neutral"}, {"agent": "情绪分析师", "rating": "情绪中性 ★★", "score": 50, "emotion_temp": 61.8, "sentiment": "乐观（积极做多窗口）", "key_findings": ["情绪温度 62° → 乐观（积极做多窗口）", "亏钱效应 146 | 主流板块 2 个", "周期节点：未知"], "verdict": "neutral"}, {"agent": "风控分析师", "rating": "高风险", "score": 40, "risk_level": "高风险", "risk_score": 60, "position_advice": "2成以下", "key_findings": ["风险评分 60/100 → 高风险", "大幅回撤 18 家 | 跌停 40 家 | 炸板率 30.0%", "建议仓位：2成以下"], "verdict": "critical"}], "backtest": {"弱转强": {"strategy": "弱转强", "total_signals": 0, "total_trades": 0, "wins": 0, "losses": 0, "total_return": 0.0, "max_drawdown": 0.0, "by_environment": {}, "trades": [], "win_rate": 0}, "趋势低吸": {"strategy": "趋势低吸", "total_signals": 0, "total_trades": 0, "wins": 0, "losses": 0, "total_return": 0.0, "max_drawdown": 0.0, "by_environment": {}, "trades": [], "win_rate": 0}}};</script></body>
 </html>
