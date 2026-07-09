@@ -40,16 +40,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .legend{display:flex;gap:8px;font-size:9px;font-weight:400}
 .legend span{display:flex;align-items:center;gap:2px;color:var(--text2)}
 .legend i{width:8px;height:8px;border-radius:1px;display:inline-block}
-.uni-container{display:flex;position:relative;border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;background:#fff;max-height:calc(100vh - 220px)}
-.uni-labels{flex-shrink:0;background:linear-gradient(180deg,#f8fafc,#f1f5f9);border-right:2px solid #e2e8f0;z-index:5;overflow-y:scroll;scrollbar-width:none}
-.uni-labels::-webkit-scrollbar{display:none}
+.uni-container{display:flex;position:relative;border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;background:#fff}
+.uni-labels{flex-shrink:0;background:linear-gradient(180deg,#f8fafc,#f1f5f9);border-right:2px solid #e2e8f0;z-index:5}
 .uni-label{display:flex;align-items:center;justify-content:center;padding:0 2px;font-size:10px;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0;text-align:center;line-height:1.2;white-space:normal;word-break:break-word;word-wrap:break-word}
 .uni-label.chart-label{color:#1e293b;font-weight:700;font-size:11px;background:linear-gradient(180deg,#f1f5f9,#e2e8f0);border-bottom:2px solid #cbd5e1}
 .uni-label.node-label{border-left:3px solid #f59e0b;color:#d97706;background:#fffbeb}
 .uni-label.main-label{border-left:3px solid #ef4444;color:#dc2626;background:#fef2f2}
 .uni-label.sub-label{border-left:3px solid #3b82f6;color:#2563eb;background:#eff6ff}
 .uni-label.theme-label{border-left:3px solid #8b5cf6;color:#7c3aed;font-size:9px;background:#faf5ff}
-.uni-viewport{flex:1;overflow-x:auto;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;position:relative}
+.uni-viewport{flex:1;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;position:relative}
 @media(max-width:768px){
   .uni-viewport{overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x}
 }
@@ -749,8 +748,8 @@ function updateScroll(){
 function onSlide(v){winStart=parseInt(v);updateScroll()}
 function setView(n){if(n===0){COL=total;winStart=0}else{COL=n;winStart=Math.max(0,total-COL)}updateScroll()}
 function scrollCols(d){if(d<0)winStart=Math.max(0,winStart-1);else winStart=Math.min(Math.max(0,total-COL),winStart+1);updateScroll()}
-function setupWheel(){var vp=document.getElementById('uniViewport');var lb=document.getElementById('uniLabels');vp.addEventListener('wheel',function(e){if(window.innerWidth<=768)return;e.preventDefault();var dx=e.deltaX||(Math.abs(e.deltaY)>10?e.deltaY:0);if(dx!==0)scrollCols(dx>0?1:-1)},{passive:false});
-  vp.addEventListener('scroll',function(){if(window.innerWidth<=768){var s=Math.round((vp.scrollLeft-YL)/COLW);s=Math.max(0,Math.min(total-COL,s));if(s!==winStart){winStart=s;document.getElementById('sld').value=winStart;var end=Math.min(winStart+COL,total);document.getElementById('winInfo').textContent=DATA[winStart].date.substring(5)+'~'+DATA[end-1].date.substring(5)+' ('+COL+'/'+total+')';}}if(lb)lb.scrollTop=vp.scrollTop;},{passive:true})}
+function setupWheel(){var vp=document.getElementById('uniViewport');vp.addEventListener('wheel',function(e){if(window.innerWidth<=768)return;e.preventDefault();var dx=e.deltaX||(Math.abs(e.deltaY)>10?e.deltaY:0);if(dx!==0)scrollCols(dx>0?1:-1)},{passive:false});
+  vp.addEventListener('scroll',function(){if(window.innerWidth<=768){var s=Math.round((vp.scrollLeft-YL)/COLW);s=Math.max(0,Math.min(total-COL,s));if(s!==winStart){winStart=s;document.getElementById('sld').value=winStart;var end=Math.min(winStart+COL,total);document.getElementById('winInfo').textContent=DATA[winStart].date.substring(5)+'~'+DATA[end-1].date.substring(5)+' ('+COL+'/'+total+')';}}},{passive:true})}
 
 // ENH 1e: Cycle summary card
 function renderCycleSummary(){
@@ -1365,7 +1364,7 @@ function init(){
     setTimeout(function(){winStart=Math.max(0,total-COL);updateScroll();},50);
   });
 }
-var AI_BRIEF={"generate_time": "2026-07-09 09:52:48", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 09:52:48", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
+var AI_BRIEF={"generate_time": "2026-07-09 11:15:11", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 11:15:11", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
 init();
 </script>
 </body>
