@@ -951,34 +951,32 @@ function hideKline(){
 }
 
 function fetchKline(code,name){
-  var prefix=code.startsWith('6')?'1':'0';
-  var secid=prefix+'.'+code;
-  var cbName='kcb_'+Date.now();
+  var pfx=code.startsWith('6')?'sh':'sz';
+  // 主数据源：新浪财经
+  var varName='sina_kline_'+Date.now();
   var timeoutId=setTimeout(function(){
-    delete window[cbName];
+    delete window[varName];
     if(klineCurCode===code){
       var body=document.getElementById('klineBody');
-      if(body&&!body.querySelector('canvas')){
-        body.innerHTML='<div class="kline-error">K线数据加载超时，请稍后重试</div>';
-      }
+      if(body&&!body.querySelector('canvas')) tryTencentKline(code,name);
     }
-  },8000);
-  window[cbName]=function(resp){
+  },5000);
+  window[varName]=function(data){
     clearTimeout(timeoutId);
-    delete window[cbName];
-    var klines=(resp.data&&resp.data.klines)||[];
-    if(klines.length<2){
-      tryTencentKline(code,name);return;
-    }
+    delete window[varName];
+    if(!data||data.length<2){tryTencentKline(code,name);return;}
+    var klines=data.map(function(d){
+      return d.day+','+d.open+','+d.close+','+d.high+','+d.low+','+d.volume;
+    });
     renderKlineChart(klines,name);
   };
   var s=document.createElement('script');
   s.onerror=function(){
     clearTimeout(timeoutId);
-    delete window[cbName];
+    delete window[varName];
     tryTencentKline(code,name);
   };
-  s.src='https://push2his.eastmoney.com/api/qt/stock/kline/get?cb='+cbName+'&secid='+secid+'&ut=fa5fd1943c7b386f172d6893dbfba10b&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61&klt=101&fqt=1&beg=20250101&end=20500101&lmt=120&_='+Date.now();
+  s.src='https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol='+pfx+code+'&scale=240&ma=no&datalen=120&_='+Date.now();
   document.head.appendChild(s);
 }
 function tryTencentKline(code,name){
@@ -992,7 +990,7 @@ function tryTencentKline(code,name){
         body.innerHTML='<div class="kline-error">K线数据获取失败</div>';
       }
     }
-  },6000);
+  },5000);
   window[varName]=function(resp){
     clearTimeout(timeoutId2);
     var key=pfx+code;
@@ -1519,7 +1517,7 @@ function init(){
     setTimeout(function(){winStart=Math.max(0,total-COL);updateScroll();},50);
   });
 }
-var AI_BRIEF={"generate_time": "2026-07-09 16:50:29", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 16:50:29", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
+var AI_BRIEF={"generate_time": "2026-07-09 16:53:52", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 16:53:52", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
 init();
 </script>
 </body>
