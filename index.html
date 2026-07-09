@@ -63,9 +63,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .u-node-cell .star{font-size:6px;color:#f59e0b}
 .u-sec-block{position:absolute;left:1px;right:1px;border-radius:2px;display:flex;align-items:center;padding:0 3px;font-size:7px;color:#fff;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-shadow:0 1px 1px rgba(0,0,0,.06);opacity:.9}
 .u-sec-block .str{font-size:6px;background:rgba(255,255,255,.25);border-radius:1px;padding:0 2px;margin-left:auto;flex-shrink:0}
-.tc-theme-bar{position:absolute;top:1px;bottom:1px;border-radius:3px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.15);opacity:.9;border:1px solid rgba(255,255,255,.15)}
+.tc-theme-bar{position:absolute;border-radius:3px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.15);opacity:.9;border:1px solid rgba(255,255,255,.15)}
 .tc-theme-bar.main{opacity:1;box-shadow:0 1px 3px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.25)}
-.tc-stage-cell{position:absolute;top:0;bottom:0;opacity:.22}
+.tc-stage-cell{position:absolute;top:0;height:100%;opacity:.22}
 .tb-name{position:absolute;left:4px;top:50%;transform:translateY(-50%);color:#fff;font-size:9px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.8);z-index:2;white-space:nowrap;pointer-events:none;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 8px)}
 .tb-stage{position:absolute;top:1px;font-size:7px;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.8);z-index:3;white-space:nowrap}
 .tb-level{position:absolute;bottom:1px;right:3px;font-size:7px;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.8);z-index:3;padding:0 3px;border-radius:2px;background:rgba(0,0,0,.35)}
@@ -647,7 +647,7 @@ function renderCanvas(){
     html+='<div class="u-row" style="top:'+y+'px;height:'+THEME_H+'px">';
     (THEME_LANES[lane]||[]).forEach(function(bar){
       var bw=(bar.e-bar.s+1)*COLW,bl=YL+bar.s*COLW,mc=bar.main?' main':'';
-      html+='<div class="tc-theme-bar'+mc+'" style="left:'+bl+'px;width:'+bw+'px;background:'+bar.color+';">';
+      html+='<div class="tc-theme-bar'+mc+'" style="left:'+bl+'px;width:'+bw+'px;height:'+(THEME_H-4)+'px;top:2px;background:'+bar.color+';">';
       var lc=bar.lc||[];
       for(var k=0;k<lc.length;k++){
         if(lc[k]!=='-')html+='<div class="tc-stage-cell" style="left:'+(k*COLW)+'px;width:'+COLW+'px;background:'+(PHASE_COLORS[lc[k]]||'transparent')+'"></div>';
@@ -1364,7 +1364,7 @@ function init(){
     setTimeout(function(){winStart=Math.max(0,total-COL);updateScroll();},50);
   });
 }
-var AI_BRIEF={"generate_time": "2026-07-09 11:15:11", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 11:15:11", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
+var AI_BRIEF={"generate_time": "2026-07-09 11:26:24", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 11:26:24", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
 init();
 </script>
 </body>
