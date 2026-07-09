@@ -322,6 +322,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 </style>
 </head>
 <body>
+<div class="kline-popup" id="klinePopup">
+  <div class="kline-popup-header">
+    <span id="klineTitle">--</span>
+    <span id="klineSubtitle" style="font-weight:400;color:#94a3b8;font-size:10px">日K线</span>
+  </div>
+  <div class="kline-popup-body" id="klineBody">
+    <div class="kline-loading">加载中...</div>
+  </div>
+</div>
 <div class="tn">
   <div class="tn-logo"><h1>情绪周期量化工具</h1><div class="copy">&copy; 景琦居</div></div>
   <div class="tn-nav" id="tnNav"></div>
@@ -1463,17 +1472,8 @@ function init(){
     setTimeout(function(){winStart=Math.max(0,total-COL);updateScroll();},50);
   });
 }
-var AI_BRIEF={"generate_time": "2026-07-09 16:18:49", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 16:18:49", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
+var AI_BRIEF={"generate_time": "2026-07-09 16:22:54", "brief": "【市场情绪】大盘系数76.5（↑44.6），周期节点震荡，市场情绪处于震荡阶段。\n\n【主线板块】主流板块: 算力；次主流板块: AI应用、并购重组。当前最高板?板。\n\n【风险与机会】关注震荡节点的操作策略，注意板块轮动节奏。\n\n【操作建议】根据情绪周期节点选择合适的交易策略，控制仓位，等待确认信号。\n\n【一句话总结】今日市场震荡，主流板块算力，短线情绪偏强。", "data_date": "2026-07-08", "template": true};var AI_AGENTS={"generate_time": "2026-07-09 16:22:55", "data_date": "2026-07-08", "avg_score": 50.0, "vote": {"bullish": 0, "bearish": 0, "neutral": 4}, "agents": [{"agent": "技术分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n趋势判断:震荡\n关键信号:大盘系数76.5，周期节点震荡\n操作建议:等待明确信号"}, {"agent": "情绪分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n情绪判断:中性\n关键信号:周期节点震荡\n操作建议:跟随情绪周期操作"}, {"agent": "基本面分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n基本面判断:中性\n关键发现:板块轮动中\n操作建议:关注主线持续性"}, {"agent": "风控分析师", "score": 50, "verdict": "neutral", "analysis": "评分:50\n风险判断:中等风险\n关键风险:板块轮动风险\n仓位建议:控制在5成以下"}], "portfolio_manager": "综合评分:50\n最终决策:观望\n核心逻辑:市场处于震荡阶段，等待明确信号\n明日关注:主流板块持续性、新题材启动\n仓位建议:5成以下", "template": true};
 init();
 </script>
-<div class="kline-popup" id="klinePopup">
-  <div class="kline-popup-header">
-    <span id="klineTitle">--</span>
-    <span id="klineSubtitle" style="font-weight:400;color:#94a3b8;font-size:10px">日K线</span>
-  </div>
-  <div class="kline-popup-body" id="klineBody">
-    <div class="kline-loading">加载中...</div>
-  </div>
-</div>
 </body>
 </html>
